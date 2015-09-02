@@ -3,6 +3,8 @@ var randomMusicKey = "";
 var omusicTheory = null;
 var omusickeys = null;
 var allMusickeys = null;
+var _lineColors = "black"
+var _noteColors = "black"
 
 function GetAllMusicKeyInfo(keyName) {
 
@@ -266,9 +268,11 @@ function makeMusicScore() {
 
 	var c = document.getElementById('myCanvas');
 	var ctx = c.getContext('2d');
-	ctx.fillStyle = "black"; //'#FF0000';
+	
+	//ctx.fillStyle = document.getElementById("idBody").attributes("backolor"); // "lightblue"; //'#FF0000';
+	ctx.fillStyle = "lightblue"; // "lightblue"; //'#FF0000';
 	ctx.fillRect(0, 0, 1000, 1000);
-
+	
 
 	makeMusicScoreLine(50);
 
@@ -334,8 +338,8 @@ function drawLine(x, y, w, z) {
 	var c = document.getElementById('myCanvas');
 	var ctx = c.getContext('2d');
 	ctx.beginPath();
-	ctx.fillStyle = "white";
-	ctx.strokeStyle = "white";
+	ctx.fillStyle = _lineColors;
+	ctx.strokeStyle = _lineColors;
 
 	ctx.fill();
 
@@ -367,7 +371,7 @@ function drawMusicNote(x, y, notename) {
 	var c = document.getElementById('myCanvas');
 	var ctx = c.getContext('2d');
 	ctx.beginPath();
-	ctx.fillStyle = "white" // "#3370d4"; //blue
+	ctx.fillStyle = _noteColors;
 	ctx.arc(x, y, notGap, 0, 2 * Math.PI);
 	ctx.fill();
 	ctx.stroke();

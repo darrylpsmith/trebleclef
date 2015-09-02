@@ -1,8 +1,27 @@
 /* Styles go here */
 
 body {
-    background-color: lightblue;
+
+
+    background-color: lightblue
 }
+
+p {
+    color : black;
+    background-color: lightblue;
+    width: inherit; 
+    position: relative;
+}
+
+h1 {
+    color: black;
+}
+
+#divSettings 
+{
+    color: black;
+}
+
 
 h1 {
     color: navy;
