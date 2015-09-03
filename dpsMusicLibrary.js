@@ -108,37 +108,37 @@ function GetRandomMusicKey()
 function ShowRandomMusicTheory() {
 
 
-	var xmlhttp = new XMLHttpRequest();
-	var randomArrayIndex = 0;
-	var randomMusicTheory = "";
+    var xmlhttp = new XMLHttpRequest();
+    var randomArrayIndex = 0;
+    var randomMusicTheory = "";
 
-	if (omusicTheory == null)
-	{
-		xmlhttp.overrideMimeType("text/plain; charset=x-user-defined");
-		xmlhttp.onreadystatechange = function () {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    if (omusicTheory == null) {
+        xmlhttp.overrideMimeType("text/plain; charset=x-user-defined");
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-				jsonData = xmlhttp.responseText;
+                jsonData = xmlhttp.responseText;
 
-				omusicTheory = JSON.parse(jsonData);
+                omusicTheory = JSON.parse(jsonData);
 
-				randomArrayIndex = Math.floor(Math.random() * omusicTheory.musictheory.length);
-				randomMusicTheory = omusicTheory.musictheory[Number(randomArrayIndex)].desc;
-				document.getElementById("musTheory").innerHTML = randomMusicTheory;
+                randomArrayIndex = Math.floor(Math.random() * omusicTheory.musictheory.length);
+                randomMusicTheory = omusicTheory.musictheory[Number(randomArrayIndex)].desc;
+                document.getElementById("musTheory").innerHTML = randomMusicTheory;
 
-			}
-		}
-		xmlhttp.open("GET", "MusicTheory.html", true);
+            }
+        }
+        xmlhttp.open("GET", "MusicTheory.html", true);
 
-		xmlhttp.send();
-	}
-	else
-	{
-		randomArrayIndex = Math.floor(Math.random() * omusicTheory.musictheory.length);
-		randomMusicTheory = omusicTheory.musictheory[Number(randomArrayIndex)].desc;
-		document.getElementById("musTheory").innerHTML = randomMusicTheory;
-	}
+        xmlhttp.send();
+    }
+    else {
+        randomArrayIndex = Math.floor(Math.random() * omusicTheory.musictheory.length);
+        randomMusicTheory = omusicTheory.musictheory[Number(randomArrayIndex)].desc;
+        document.getElementById("musTheory").innerHTML = randomMusicTheory;
+    }
 }
+
+
 
 function changeLowest() {
 	lowestWantedNote = Number(document.getElementById("lownote").value);

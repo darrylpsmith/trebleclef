@@ -1,5 +1,16 @@
 ﻿$(document).ready(function () {
     $("#btnHideSettings").click(function () {
-        $("#divSettings").hide();
+
+        if ($("#divSettings").is(":visible"))
+        {
+            $("#btnHideSettings").html("Show");
+            $("#divSettings").hide();
+        }
+        else
+        {
+            $("#btnHideSettings").html("Hide");
+            $("#divSettings").show();
+        }
+
     });
 });
