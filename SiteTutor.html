@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿
+
+
+
+
+
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -20,13 +26,13 @@
 
 <body id="idBody">
 
-    <h1>Sight Reading Coach</h1>
+    <h1>Index Page</h1>
 
 
     <div ng-app="angularTrebleClefApp" ng-controller="ctrlMusicKeys">
 
         <p id="musTheory">
-
+            {{ musTheorySnippet }}
         </p>
     </div>
 
@@ -57,63 +63,9 @@
         &nbsp;<p id="musTheory2"> </p>
     </div>
 
-    <script>
-
-
-
-		var myTimer;
-		var guitarNotes = ["E1", "F1", "G1", "A1", "B1", "C1", "D1", "E2", "F2", "G2", "A2", "B2", "C2", "D2", "E3", "F3", "G3", "A3", "B3", "C3", "D3", "E4"];
-		var numGuitarNotes = guitarNotes.length;
-		var notGap = 5;
-		var lowestWantedNote = 0;
-		var highestWantedNote = 21;
-
-
-		makeMusicScore();
-
-		// Retrieve stored settings
-		var speed = localStorage.getItem("musicscorespeed");
-
-		var lownote = localStorage.getItem("lownote");
-		var highnote = localStorage.getItem("highnote");
-		if (speed == "")
-		{
-		  speed = "3";
-		}
-
-		if  ((lownote == "") || (lownote == "0"))
-		{
-		  lownote = "1";
-		}
-
-		if ((highnote == "") || (highnote == "0"))
-		{
-		  highnote = "25";
-		}
-
-		document.getElementById("speed").value = speed;
-
-		document.getElementById("lownote").value = lownote;
-		document.getElementById("highnote").value = highnote;
-		changeSpeed();
-		changeHighest();
-		changeLowest();
-
-
-    </script>
-
-
-    <p id="musTheory">
-
-    </p>
 
 
 </body>
 
 
 </html>
-
-
-
-
-
