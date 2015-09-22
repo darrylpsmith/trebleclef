@@ -69,6 +69,16 @@
         var lowestWantedNote = 0;
         var highestWantedNote = 21;
 
+        var speed = 5;
+        var lownote = 1;
+        var highnote = 15;
+
+        // Default user settings before trying to retrieve from local storage (in case browser does not support HTML5 local storage)
+        document.getElementById("speed").value = speed;
+        document.getElementById("lownote").value = lownote;
+        document.getElementById("highnote").value = highnote;
+
+
         // Initiate Javascript Application
         Main();
 
