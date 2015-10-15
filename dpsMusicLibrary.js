@@ -291,6 +291,15 @@ function makeMusicScoreLine(startStaff) {
 	var userWantsFiths = 0;
 	userWantsFiths = document.getElementById("chkUseFiths").checked;
 
+	var userWantsSolfege = 0;
+	userWantsSolfege = document.getElementById("chkSolfegeText").checked;
+
+	var musSolfegeSymbols = ["doh", "re", "me", "fa", "so", "lah", "ti" , "doh"];
+
+	var userWantsNoteNames = 0;
+	userWantsNoteNames = document.getElementById("chkNoteNames").checked;
+
+
 	var lowNote = startStaff + 15 * notGap;
 
 	drawMusicStaff(startStaff);
@@ -312,7 +321,7 @@ function makeMusicScoreLine(startStaff) {
 
 		musNotes[i] = {
 			name: theNote.name, pos: raiseNote, len: "4", addThird: (addThd == 1), addFith: (addFth == 1),
-			ledLineAbove: numLedgeLineAbove
+			ledLineAbove: numLedgeLineAbove, numberInScale: theNote.num
 		};
 	}
 
@@ -329,6 +338,24 @@ function makeMusicScoreLine(startStaff) {
 
 		if (musNotes[i].addFith == 1)
 			drawMusicNote(i * 100, lowNote - musNotes[i].pos - (4 * notGap), musNotes[i].name);
+
+		var solfegeText = "";
+		var noteNum = musNotes[i].numberInScale;
+		if (userWantsSolfege == 1 && noteNum < 8)
+		{
+		    try {
+		        solfegeText = musSolfegeSymbols[noteNum];
+		    } catch (e) {
+		        solfegeText = "";
+		    }
+		}
+		drawSolfegeText(i * 100, lowNote + 25, solfegeText);
+
+		var note = musNotes[i].name;
+		note = note.substring(0, 1);
+		note = note.toLowerCase();
+		if (userWantsNoteNames == 1)
+		    drawSNoteNameText(i * 100, lowNote + 20, note);
 
 	}
 
@@ -416,8 +443,40 @@ function drawMusicNote(x, y, notename) {
 		ledgLinesBelow--;
 	}
 
+
+
+
 	return;
 }
+
+function drawSolfegeText(x, y, solfegeText) {
+
+    var c = document.getElementById('myCanvas');
+    var ctx = c.getContext('2d');
+    ctx.beginPath();
+
+    // Add Solfege Symbols below notes
+    ctx.font = "20px Georgia";
+    ctx.fillText(solfegeText, x, y);
+
+    return;
+}
+
+function drawSNoteNameText(x, y, noteName) {
+
+    var c = document.getElementById('myCanvas');
+    var ctx = c.getContext('2d');
+    ctx.beginPath();
+
+    // Add Solfege Symbols below notes
+    ctx.font = "20px Georgia";
+    ctx.fillText(noteName, x, y);
+
+    return;
+}
+
+
+
 
 function drawKeySharp(x, y, notename) {
 	var c = document.getElementById('myCanvas');
