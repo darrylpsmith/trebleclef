@@ -6,6 +6,7 @@ var allMusickeys = null;
 var _lineColors = "black"
 var _noteColors = "black"
 
+
 function GetAllMusicKeyInfo(keyName) {
 
 	if (allMusickeys == null)
