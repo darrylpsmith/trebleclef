@@ -1,4 +1,5 @@
 ﻿
+
 function drawMusicStaff(y, canvasContext) {
 	var start = 50;
 	var length = 800;
