@@ -2,18 +2,23 @@
 
 
 body {
-    background-color: lightblue
+    background-color: white
 }
 
 p {
     color : black;
-    background-color: lightblue;
+    background-color: white;
     width: inherit; 
     position: relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
 }
 
 h1 {
     color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-left: 20px; 
+	font-size: small;
 }
 
 #divSettings 
@@ -21,8 +26,3 @@ h1 {
     color: black;
 }
 
-
-h1 {
-    color: navy;
-    margin-left: 20px;
-}

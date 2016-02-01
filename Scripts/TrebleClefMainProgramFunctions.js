@@ -3,7 +3,11 @@ function Main() {
 
 
 
-    makeMusicScore();
+	makeMusicScore("myCanvas1");
+	makeMusicScore("myCanvas2");
+	makeMusicScore("myCanvas3");
+	makeMusicScore("myCanvas4");
+	makeMusicScore("myCanvas5");
 
 
     try {

@@ -7,6 +7,16 @@ var _lineColors = "black"
 var _noteColors = "black"
 
 
+function GetMusicStaffCanvas(canvasId)
+{
+	return document.getElementById(canvasId);
+}
+
+function GetMusicStaffCanvasContext(canvasId) {
+	return GetMusicStaffCanvas(canvasId).getContext('2d');
+}
+
+
 function GetAllMusicKeyInfo(keyName) {
 
 	if (allMusickeys == null)
@@ -106,7 +116,7 @@ function GetRandomMusicKey()
 	}
 }
 
-function ShowRandomMusicTheory() {
+function ShowRandomMusicTheory(ctx) {
 
 
     var xmlhttp = new XMLHttpRequest();
@@ -125,7 +135,7 @@ function ShowRandomMusicTheory() {
                 randomArrayIndex = Math.floor(Math.random() * omusicTheory.musictheory.length);
                 randomMusicTheory = omusicTheory.musictheory[Number(randomArrayIndex)].desc;
                 document.getElementById("musTheory").innerHTML = randomMusicTheory;
-
+                writeTextOnCanvas(20, 20, randomMusicTheory, ctx);
             }
         }
         xmlhttp.open("GET", "MusicTheory.html", true);
@@ -136,6 +146,7 @@ function ShowRandomMusicTheory() {
         randomArrayIndex = Math.floor(Math.random() * omusicTheory.musictheory.length);
         randomMusicTheory = omusicTheory.musictheory[Number(randomArrayIndex)].desc;
         document.getElementById("musTheory").innerHTML = randomMusicTheory;
+        writeTextOnCanvas(20, 20, randomMusicTheory, ctx);
     }
 }
 
@@ -170,11 +181,23 @@ function changeHighest() {
 
 function getRandomGuitarNoteNumber() {
 
-	noteNum = Number(lowestWantedNote) + Math.floor((Number(highestWantedNote) - Number(lowestWantedNote)) * Math.random());
+	var lowestNote = Number(lowestWantedNote);
+	var highestNote = Number(highestWantedNote);
+	var possibleNoteCount = Math.floor(highestNote - lowestNote);
+	var randomSeed = Math.random();
+	
+	var randomNote = Math.floor(lowestNote + (possibleNoteCount * randomSeed));
+	
+	//var rangingUpByNoteCount = Math.floor((Number(highestWantedNote) - Number(lowestWantedNote));
+	
+	
+
+	//var randomGeneratedNoteNumber = lowestNote
+	var noteNum = Number(lowestWantedNote) + Math.floor((Number(highestWantedNote) - Number(lowestWantedNote)) * Math.random());
 	//if (noteNum > 22) alert("high " + highestWantedNote + " low " + lowestWantedNote + " note " + noteNum);
 
 	//		noteNum = Math.floor(numGuitarNotes * Math.random());
-	return noteNum;
+	return randomNote;
 }
 
 function getRandomGuitarNote() {
@@ -182,76 +205,20 @@ function getRandomGuitarNote() {
 	return { name: guitarNotes[noteNum], num: noteNum };
 }
 
-function getLedgerLinesThroughAbove(notename) {
-	switch (notename) {
-		case "F1":
-			return 3;
-			break;
-		case "A1":
-			return 2;
-			break;
-		case "C1":
-			return 1;
-			break;
-		default:
-			return 0;
 
-	}
-}
-
-function getLedgerLinesThroughBelow(notename) {
-	switch (notename) {
-		case "E4":
-			return 3;
-			break;
-		case "C3":
-			return 2;
-			break;
-		case "A3":
-			return 1;
-			break;
-		default:
-			return 0;
-
-	}
-}
-
-
-function getLedgerLinesAbove(notename) {
-	switch (notename) {
-		case "E1":
-			return 3;
-			break;
-		case "G1":
-			return 2;
-			break;
-		case "B1":
-			return 1;
-			break;
-		default:
-			return 0;
-
-	}
-}
-
-function getLedgerLinesBelow(notename) {
-	switch (notename) {
-		case "B3":
-			return 1;
-			break;
-		case "D3":
-			return 2;
-			break;
-		default:
-			return 0;
-
-	}
-}
 
 function changeSpeed() {
 	var spd = document.getElementById("speed").value;
 	myTimer = window.clearInterval(myTimer);
-	myTimer = window.setInterval(function () { makeMusicScore() }, spd * 1000);
+	myTimer = window.setInterval(
+		function () {
+			makeMusicScore("myCanvas1");
+			makeMusicScore("myCanvas2");
+			makeMusicScore("myCanvas3");
+			makeMusicScore("myCanvas4");
+			makeMusicScore("myCanvas5");
+
+		}, spd * 1000);
 
 	// Store
 	localStorage.setItem("musicscorespeed", spd);
@@ -259,31 +226,36 @@ function changeSpeed() {
 }
 
 
-function makeMusicScore() {
+function makeMusicScore(canvasId) {
 
 	//Randomize a key
 	GetRandomMusicKey();
 
 	//Show a theory snippet
-	ShowRandomMusicTheory();
 
-	var c = document.getElementById('myCanvas');
-	var ctx = c.getContext('2d');
+	var cTheory = GetMusicStaffCanvas("myCanvas6"); 
+	var ctxTheory = GetMusicStaffCanvasContext("myCanvas6");
+	ctxTheory.clearRect(0, 0, cTheory.width, cTheory.height);
+
+	ShowRandomMusicTheory(ctxTheory);
+
+	var c = GetMusicStaffCanvas(canvasId); // document.getElementById('myCanvas');
+	var ctx = GetMusicStaffCanvasContext(canvasId); //c.getContext('2d');
 	
 	//ctx.fillStyle = document.getElementById("idBody").attributes("backolor"); // "lightblue"; //'#FF0000';
-	ctx.fillStyle = "lightblue"; // "lightblue"; //'#FF0000';
-	ctx.fillRect(0, 0, 1000, 1000);
-	
+	//ctx.fillStyle = "white"; // "lightblue"; //'#FF0000';
+	//ctx.fillRect(0, 0, 1000, 1000);
+	ctx.clearRect(0, 0, c.width, c.height);
 
-	makeMusicScoreLine(50);
+	makeMusicScoreLine(50, ctx);
 
-	makeMusicScoreLine(50 + 3 * (10 * notGap));
+	makeMusicScoreLine(50 + 3 * (10 * notGap), ctx);
 	//makeMusicScoreLine(50 + 6 * (10 * notGap));
 
 }
 //var myVar = setInterval(function () { makeMusicScore() }, 8000);
 
-function makeMusicScoreLine(startStaff) {
+function makeMusicScoreLine(startStaff, ctx) {
 
 	var userWantsThirds = 0;
 	userWantsThirds = document.getElementById("chkUseTriads").checked;
@@ -302,7 +274,7 @@ function makeMusicScoreLine(startStaff) {
 
 	var lowNote = startStaff + 15 * notGap;
 
-	drawMusicStaff(startStaff);
+	drawMusicStaff(startStaff, ctx);
 
 	var musNotes = [""];
 	var theNote;
@@ -328,16 +300,16 @@ function makeMusicScoreLine(startStaff) {
 
 
 	for (i = 1 ; i < 9; i++) {
-		drawMusicNote(i * 100, lowNote - musNotes[i].pos, musNotes[i].name);
+		drawMusicNote(i * 100, lowNote - musNotes[i].pos, musNotes[i].name, ctx);
 		//drawKeySharp(i * 100, lowNote - musNotes[i].pos, musNotes[i].name);
 
 
 		if (musNotes[i].addThird == 1) {
-			drawMusicNote(i * 100, lowNote - musNotes[i].pos - (2 * notGap), musNotes[i].name);
+			drawMusicNote(i * 100, lowNote - musNotes[i].pos - (2 * notGap), musNotes[i].name, ctx);
 		}
 
 		if (musNotes[i].addFith == 1)
-			drawMusicNote(i * 100, lowNote - musNotes[i].pos - (4 * notGap), musNotes[i].name);
+			drawMusicNote(i * 100, lowNote - musNotes[i].pos - (4 * notGap), musNotes[i].name, ctx);
 
 		var solfegeText = "";
 		var noteNum = musNotes[i].numberInScale;
@@ -349,168 +321,26 @@ function makeMusicScoreLine(startStaff) {
 		        solfegeText = "";
 		    }
 		}
-		drawSolfegeText(i * 100, lowNote + 25, solfegeText);
+		writeTextOnCanvas(i * 100, lowNote + 25, solfegeText, ctx);
 
 		var note = musNotes[i].name;
 		note = note.substring(0, 1);
 		note = note.toLowerCase();
 		if (userWantsNoteNames == 1)
-		    drawSNoteNameText(i * 100, lowNote + 20, note);
+			writeTextOnCanvas(i * 100, lowNote + 20, note, ctx);
 
 	}
 
 
 }
 
-function drawLine(x, y, w, z) {
-	var c = document.getElementById('myCanvas');
-	var ctx = c.getContext('2d');
-	ctx.beginPath();
-	ctx.fillStyle = _lineColors;
-	ctx.strokeStyle = _lineColors;
-
-	ctx.fill();
-
-	ctx.moveTo(x, y);
-	ctx.lineTo(w, z);
-	ctx.stroke();
-
-}
-
-
-function drawMusicStaff(y) {
-	var start = 50;
-	var length = 800;
-
-
-	drawLine(start, y, start + length, y)
-	drawLine(start, y + 1 * (2 * notGap), start + length, y + 1 * (2 * notGap));
-	drawLine(start, y + 2 * (2 * notGap), start + length, y + 2 * (2 * notGap));
-	drawLine(start, y + 3 * (2 * notGap), start + length, y + 3 * (2 * notGap));
-	drawLine(start, y + 4 * (2 * notGap), start + length, y + 4 * (2 * notGap));
-
-	drawLine(start, y, start, y + 4 * (2 * notGap));
-	drawLine(start + length, y, start + length, y + 4 * (2 * notGap));
-	drawLine(start + (length / 2), y, start + (length / 2), y + 4 * (2 * notGap));
-
-}
-
-function drawMusicNote(x, y, notename) {
-	var c = document.getElementById('myCanvas');
-	var ctx = c.getContext('2d');
-	ctx.beginPath();
-	ctx.fillStyle = _noteColors;
-	ctx.arc(x, y, notGap, 0, 2 * Math.PI);
-	ctx.fill();
-	ctx.stroke();
-
-	ctx.beginPath();
-	ctx.moveTo(x + notGap, y);
-	ctx.lineTo(x + notGap, y - (5 * notGap));
-	ctx.stroke();
-
-	var ledgLinesThru = getLedgerLinesThroughAbove(notename);
-	var linePos = y;
-	while (ledgLinesThru > 0) {
-		drawLine(x - 10, linePos, x + 10, linePos);
-		linePos = linePos - 2 * notGap;
-		ledgLinesThru--;
-	}
-
-
-	var ledgLinesThru = getLedgerLinesThroughBelow(notename);
-	var linePos = y;
-	while (ledgLinesThru > 0) {
-		drawLine(x - 10, linePos, x + 10, linePos);
-		linePos = linePos + 2 * notGap;
-		ledgLinesThru--;
-	}
-
-
-	var ledgLinesAbove = getLedgerLinesAbove(notename);
-	var linePos = y;
-	while (ledgLinesAbove > 0) {
-		drawLine(x - 10, linePos - notGap, x + 10, linePos - notGap);
-		linePos = linePos - 2 * notGap;
-		ledgLinesAbove--;
-	}
-
-	var ledgLinesBelow = getLedgerLinesBelow(notename);
-	var linePos = y;
-	while (ledgLinesBelow > 0) {
-		drawLine(x - 10, linePos + notGap, x + 10, linePos + notGap);
-		linePos = linePos + 2 * notGap;
-		ledgLinesBelow--;
-	}
 
 
 
 
-	return;
-}
-
-function drawSolfegeText(x, y, solfegeText) {
-
-    var c = document.getElementById('myCanvas');
-    var ctx = c.getContext('2d');
-    ctx.beginPath();
-
-    // Add Solfege Symbols below notes
-    ctx.font = "20px Georgia";
-    ctx.fillText(solfegeText, x, y);
-
-    return;
-}
-
-function drawSNoteNameText(x, y, noteName) {
-
-    var c = document.getElementById('myCanvas');
-    var ctx = c.getContext('2d');
-    ctx.beginPath();
-
-    // Add Solfege Symbols below notes
-    ctx.font = "20px Georgia";
-    ctx.fillText(noteName, x, y);
-
-    return;
-}
 
 
 
 
-function drawKeySharp(x, y, notename) {
-	var c = document.getElementById('myCanvas');
-	var ctx = c.getContext('2d');
-	ctx.beginPath();
-	ctx.fillStyle = "black" // "#3370d4"; //blue
 
-	ctx.beginPath();
-	ctx.strokeStyle = "purple"; // Purple path
-	ctx.moveTo(x + notGap, y);
-	ctx.lineTo(x + 2 * notGap, y - (3 * notGap));
-	ctx.stroke();
 
-	x = x + 5;
-
-	ctx.beginPath();
-	ctx.strokeStyle = "purple"; // Purple path
-	ctx.moveTo(x + notGap, y);
-	ctx.lineTo(x + 2 * notGap, y - (3 * notGap));
-	ctx.stroke();
-
-	x = x - 10;
-
-	ctx.beginPath();
-	ctx.strokeStyle = "purple"; // Purple path
-	ctx.moveTo(x + notGap, y - (2 * notGap));
-	ctx.lineTo(x + 5 * notGap, y - (2 * notGap));
-	ctx.stroke();
-
-	ctx.beginPath();
-	ctx.strokeStyle = "purple"; // Purple path
-	ctx.moveTo(x + notGap, y - (1 * notGap));
-	ctx.lineTo(x + 5 * notGap, y - (1 * notGap));
-	ctx.stroke();
-
-	return;
-}
