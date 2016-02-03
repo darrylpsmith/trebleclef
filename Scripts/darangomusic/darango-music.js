@@ -5,7 +5,8 @@ var omusickeys = null;
 var allMusickeys = null;
 var _lineColors = "black"
 var _noteColors = "black"
-
+var musicNotes = null;
+var musicNoteIntervals = null;
 
 function GetMusicStaffCanvas(canvasId)
 {
@@ -44,6 +45,120 @@ function GetAllMusicKeyInfo(keyName) {
 	{
 		DisplayMusicKeyInfo(keyName);
 	}
+}
+
+
+function GetMusicNotesWithSharps() {
+
+	if (musicNotes == null) {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.overrideMimeType("text/plain; charset=x-user-defined");
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				//document.getElementById("keyDetails").innerHTML = "";
+
+				jsonData = xmlhttp.responseText;
+
+				musicNotes = JSON.parse(jsonData);
+
+				DisplayMusicNotes(musicNotes);
+
+			}
+		}
+		xmlhttp.open("GET", "MusicNotesSharps.html", true);
+		xmlhttp.send();
+
+
+	}
+	else {
+		DisplayMusicNotes(musicNotes);
+	}
+}
+
+
+function GetMusicMajortScaleNoteIntervalIndexes() {
+
+	if (musicNoteIntervals == null) {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.overrideMimeType("text/plain; charset=x-user-defined");
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+
+				jsonData = xmlhttp.responseText;
+
+				musicNoteIntervals = JSON.parse(jsonData);
+
+				DisplayMusicMajortScaleNoteIntervalIndexes(musicNoteIntervals);
+				
+			}
+		}
+		xmlhttp.open("GET", "MusicMajortScaleNotes.html", true);
+		xmlhttp.send();
+
+
+	}
+	else {
+		DisplayMusicMajortScaleNoteIntervalIndexes(musicNoteIntervals);
+	}
+}
+
+
+
+function DisplayMusicNotes(musicNotes) {
+
+	var scale = "CHROMATIC SCALE : "; 
+	for (i = 0; i < musicNotes.musicnotessharps.length; i++)
+	{
+		scale = scale + musicNotes.musicnotessharps[i].name + ", ";
+	}
+
+	document.getElementById("musicNotes").innerHTML = scale;
+}
+
+function DisplayMusicMajortScaleNoteIntervalIndexes(musicNoteIntervals) {
+
+	var scale = "MUSIC NOTE INTERVALS: ";
+	for (i = 0; i < musicNoteIntervals.majorscalenotes.length; i++) {
+		scale = scale + musicNoteIntervals.majorscalenotes[i].index + ", ";
+	}
+
+	document.getElementById("musicNoteIntervals").innerHTML = scale;
+}
+
+function GetMajorScale(scaleIndex, ctx)
+{
+
+	DisplayMajorScale(scaleIndex, ctx);
+}
+
+function DisplayMajorScale(scaleIndex, ctx) {
+
+
+
+
+	if (musicNoteIntervals)
+	{
+		var scale = "MAJOR SCALE: ";
+		var findNoteIndex = 0;
+
+		var randomArrayIndex = Math.floor(Math.random() * (musicNotes.musicnotessharps.length));
+		scaleIndex = randomArrayIndex;
+
+		for (i = 0; i < musicNoteIntervals.majorscalenotes.length; i++) {
+			findNoteIndex = musicNoteIntervals.majorscalenotes[i].index;
+			findNoteIndex = findNoteIndex + scaleIndex;
+			if (findNoteIndex > 11)
+			{
+				findNoteIndex = findNoteIndex - 12;
+			}
+			scale = scale + musicNotes.musicnotessharps[findNoteIndex].name + ", ";
+		}
+
+		document.getElementById("musicMajorScale").innerHTML = scale;
+		writeTextOnCanvas(20, 20, scale, ctx);
+	}
+
 }
 
 function DisplayMusicKeyInfo(keyName)
@@ -216,7 +331,7 @@ function changeSpeed() {
 			makeMusicScore("myCanvas2");
 			makeMusicScore("myCanvas3");
 			makeMusicScore("myCanvas4");
-			makeMusicScore("myCanvas5");
+
 
 		}, spd * 1000);
 
@@ -252,6 +367,17 @@ function makeMusicScore(canvasId) {
 	makeMusicScoreLine(50 + 3 * (10 * notGap), ctx);
 	//makeMusicScoreLine(50 + 6 * (10 * notGap));
 
+	// Show Jazz Chord Sequence
+	GetMusicNotesWithSharps();
+	// Show MAjorScaleNoteIntervals
+	GetMusicMajortScaleNoteIntervalIndexes();
+
+
+	var cScaleDetails= GetMusicStaffCanvas("myCanvas5");
+	var ctxScaleDetails = GetMusicStaffCanvasContext("myCanvas5");
+	ctxScaleDetails.clearRect(0, 0, cScaleDetails.width, cScaleDetails.height);
+
+	GetMajorScale(12, ctxScaleDetails);
 }
 //var myVar = setInterval(function () { makeMusicScore() }, 8000);
 

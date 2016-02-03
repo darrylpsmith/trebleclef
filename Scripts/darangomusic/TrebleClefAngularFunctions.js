@@ -1,4 +1,6 @@
-﻿var app = angular.module('angularTrebleClefApp', []);
+﻿
+
+var app = angular.module('angularTrebleClefApp', []);
 
 app.controller('ctrlMusicKeys', function ($scope) {
 

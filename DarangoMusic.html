@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+	<script src="Scripts/angular.js"></script>
+	<!-- Latest compiled and minified CSS
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+		-->
+	<script src="Scripts/jquery-1.9.1.js"></script>
+	<link rel="stylesheet" href="Content/bootstrap.min.css">
+
+	<!-- Optional theme
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+		 -->
+	<link rel="stylesheet" href="Content/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+	-->
+	<script src="Scripts/bootstrap.min.js"></script>
+
+
+
+	<script src="Scripts/darangomusic/darango-canvasrendering.js"></script>
+	<script src="Scripts/darangomusic/darango-sheetmusicrendering.js"></script>
+
+	<script src="Scripts/darangomusic/darango-music.js"></script>
+
+	<script src="Scripts/darangomusic/TrebleClefJQueryFunctions.js"></script>
+	<script src="Scripts/darangomusic/TrebleClefAngularFunctions.js"></script>
+	<script src="Scripts/darangomusic/TrebleClefMainProgramFunctions.js"></script>
+
+	<script src="Scripts/darangomusic/darango.music.module.js"></script>
+	<script src="Scripts/darangomusic/darango.music.controller.js"></script>
+	<script src="Scripts/darangomusic/darango.music.service.js"></script>
+
+
+	<script>
+		/*global angular */
+
+		(function () {
+			"use strict";
+
+			angular.module("app", ["darangoMusic"]);
+		})();
+
+		/*global angular */
+
+		(function () {
+			"use strict";
+
+			angular.module("app").run(run);
+
+			/** @ngInject */
+			function run() {
+
+			}
+		})();
+
+
+	</script>
+	<link rel="stylesheet" type="text/css" href="./Content/style.css">
+</head>
+<body>
+
+	<style>
+		.btn-file {
+			position: relative;
+			overflow: hidden;
+		}
+
+			.btn-file input[type=file] {
+				position: absolute;
+				top: 0;
+				right: 0;
+				min-width: 100%;
+				min-height: 100%;
+				font-size: 100px;
+				text-align: right;
+				filter: alpha(opacity=0);
+				opacity: 0;
+				outline: none;
+				background: white;
+				cursor: inherit;
+				display: block;
+			}
+	</style>
+
+
+
+
+	<div ng-controller="DarangoMusicController as darangMusic">
+		<navigation-bar header="'My_Folders.Title'"></navigation-bar>
+		<div class="bootstrap-sirc">
+			<div class="container">
+
+
+
+				<div class="col-md-8 text-left">
+					<p class="form-control-static text-danger reportdesigner-createpredefinedroworcolumnset-dialog-error">
+						{{ darangMusic.errorMessage}}
+					</p>
+				</div>
+
+				<div class="panel-group" ng-repeat="note in darangMusic.notes">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-7 text-left">
+								<div class="sirc-image sirc-image-financials-small"></div>
+								&nbsp;
+								<div class="sirc-financials-text sirc-tooltip" data-toggle="tooltip" title="{{note.name}}" href="" ng-click="darangMusic.getMusicNoteSharps()">
+									{{folder.name}}
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+
+				<div class="panel-group" ng-repeat="report in myFolders.reports | orderBy: 'name'">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="col-md-7 text-left">
+								<div class="sirc-image sirc-image-dashboards"></div>
+								&nbsp;
+								<div class="sirc-financials-text sirc-tooltip" data-toggle="tooltip" title="{{report.name}}" href="" ng-click="myFolders.openDocument(report.id)">
+									{{report.name}}
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="btn-group btn-sm">
+
+									<a class="btn btn-sm btn-success" ng-href="/api/document/{{report.id}}" asdasdasdng-click="myFolders.openDocument(report.id)">
+										<span class="glyphicon glyphicon-play-circle"></span> {{ 'STAND_ALONE.EXCEL_REPORTS.OPEN' | translate }}
+									</a>
+
+									<button type="button" class="btn btn-sm btn-success" ng-click="myFolders.openDocument(report.id)">
+										<span class="glyphicon glyphicon-play-circle"></span> {{ 'STAND_ALONE.EXCEL_REPORTS.OPEN' | translate }}
+									</button>
+									<button type="button" class="btn btn-sm btn-success" ng-disabled="report.IsLocked" ng-click="myFolders.deleteDocument(report.id)">
+										<span class="glyphicon glyphicon-remove"></span> {{ 'STAND_ALONE.EXCEL_REPORTS.DELETE' | translate}}
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+</body>
+</html>
